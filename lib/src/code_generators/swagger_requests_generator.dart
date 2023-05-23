@@ -75,7 +75,8 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
           f
             ..name = 'onError'
             ..type = Reference('void Function(dynamic, StackTrace)?')
-            ..modifier = FieldModifier.final$,
+            ..modifier = FieldModifier.final$
+            ..late = true,
         ))
     );
   }
@@ -115,8 +116,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
           p
             ..named = true
             ..type = Reference('void Function(dynamic, StackTrace)?')
-            ..name = 'onError'
-            ..toThis = true,
+            ..name = 'onError',
         ))
         ..body = Code(body),
     );
