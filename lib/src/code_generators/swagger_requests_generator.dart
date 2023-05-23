@@ -69,7 +69,14 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
         ..docs.add(kServiceHeader)
         ..annotations.add(refer(kChopperApi).call([]))
         ..abstract = true
-        ..name = className,
+        ..name = className
+        ..fields.add(Field(
+              (f) =>
+          f
+            ..name = '_handleError'
+            ..type = Reference('void Function(dynamic, StackTrace)?')
+            ..modifier = FieldModifier.final$,
+        ))
     );
   }
 
@@ -102,6 +109,14 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
             ..named = true
             ..type = Reference('Iterable<dynamic>?')
             ..name = 'interceptors',
+        ))
+        ..optionalParameters.add(Parameter(
+              (p) =>
+          p
+            ..named = true
+            ..type = Reference('void Function(dynamic, StackTrace)?')
+            ..name = 'handleError'
+            ..toThis = true,
         ))
         ..body = Code(body),
     );
@@ -415,7 +430,17 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
     });
 
     return Code(
-        '$allModelsString\nreturn _$publicMethodName($parametersListString);');
+        '''
+$allModelsString
+try {
+  return _$publicMethodName($parametersListString);
+} catch (e) {
+  if (errorHandler != null) {
+    return errorHandler(e);
+  } else {
+    rethrow;
+  }
+}''');
   }
 
   List<Expression> _getMethodAnnotation(
