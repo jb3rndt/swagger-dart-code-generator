@@ -394,6 +394,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
         ..docs.addAll(method.docs)
         ..name = method.name
         ..returns = method.returns
+        ..modifier = MethodModifier.async
         ..body = _generatePublicMethodCode(
           parameters,
           method.name!,
