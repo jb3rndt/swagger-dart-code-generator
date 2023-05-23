@@ -1256,7 +1256,7 @@ try {
         : 'converter: chopper.JsonConverter(),';
 
     final chopperClientBody = '''
-    convertTransportError = convertTransportError;
+    _convertTransportError = convertTransportError;
 
     if(client!=null){
       return _\$$className(client);
