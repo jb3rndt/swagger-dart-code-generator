@@ -73,7 +73,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
         ..fields.add(Field(
               (f) =>
           f
-            ..name = '_handleError'
+            ..name = 'handleError'
             ..type = Reference('void Function(dynamic, StackTrace)?')
             ..modifier = FieldModifier.final$,
         ))
@@ -435,8 +435,8 @@ $allModelsString
 try {
   return _$publicMethodName($parametersListString);
 } catch (e) {
-  if (errorHandler != null) {
-    return errorHandler(e);
+  if (handleError != null) {
+    return handleError(e);
   } else {
     rethrow;
   }
