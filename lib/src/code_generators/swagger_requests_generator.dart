@@ -73,7 +73,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
         ..fields.add(Field(
               (f) =>
           f
-            ..name = 'handleError'
+            ..name = 'onError'
             ..type = Reference('void Function(dynamic, StackTrace)?')
             ..modifier = FieldModifier.final$,
         ))
@@ -115,7 +115,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
           p
             ..named = true
             ..type = Reference('void Function(dynamic, StackTrace)?')
-            ..name = 'handleError'
+            ..name = 'onError'
             ..toThis = true,
         ))
         ..body = Code(body),
@@ -435,8 +435,8 @@ $allModelsString
 try {
   return _$publicMethodName($parametersListString);
 } catch (e) {
-  if (handleError != null) {
-    return handleError(e);
+  if (onError != null) {
+    return onError(e);
   } else {
     rethrow;
   }
@@ -1252,6 +1252,8 @@ try {
         : 'converter: chopper.JsonConverter(),';
 
     final chopperClientBody = '''
+    onError = onError;
+
     if(client!=null){
       return _\$$className(client);
     }
