@@ -73,10 +73,9 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
         ..fields.add(Field(
               (f) =>
           f
-            ..name = 'onError'
-            ..type = Reference('void Function(dynamic, StackTrace)?')
-            ..modifier = FieldModifier.final$
-            ..late = true,
+            ..name = '_convertTransportError'
+            ..type = Reference('Exception Function(dynamic, StackTrace)?')
+            ..static = true,
         ))
     );
   }
@@ -115,8 +114,8 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
               (p) =>
           p
             ..named = true
-            ..type = Reference('void Function(dynamic, StackTrace)?')
-            ..name = 'onError',
+            ..type = Reference('Exception Function(dynamic, StackTrace)?')
+            ..name = 'convertTransportError',
         ))
         ..body = Code(body),
     );
@@ -432,20 +431,19 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
     return Code(
         '''
 $allModelsString
-var res = _$publicMethodName($parametersListString);
-res.then((value) {
-  if (value.isSuccessful) {
-    return value;
+try {
+  var result = await _$publicMethodName($parametersListString);
+  if (result.isSuccessful) {
+    return result;
   }
-  throw value.error!;
-}).catchError((e, stack) {
-  if (onError != null) {
-    onError!(e, stack);
-    return res;
+  throw result.error!;
+} catch (e, stack) {
+  if (_convertTransportError != null) {
+    throw _convertTransportError!(e, stack);
+  } else {
+    rethrow;
   }
-  throw e;
-});
-return res;''');
+}''');
   }
 
   List<Expression> _getMethodAnnotation(
@@ -1257,7 +1255,7 @@ return res;''');
         : 'converter: chopper.JsonConverter(),';
 
     final chopperClientBody = '''
-    onError = onError;
+    convertTransportError = convertTransportError;
 
     if(client!=null){
       return _\$$className(client);
