@@ -432,15 +432,20 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
     return Code(
         '''
 $allModelsString
-try {
-  return _$publicMethodName($parametersListString);
-} catch (e, stack) {
-  if (onError != null) {
-    return onError!(e, stack);
-  } else {
-    rethrow;
+var res = _$publicMethodName($parametersListString);
+res.then((value) {
+  if (value.isSuccessful) {
+    return value;
   }
-}''');
+  throw value.error!;
+}).catchError((e, stack) {
+  if (onError != null) {
+    onError!(e, stack);
+    return res;
+  }
+  throw e;
+});
+return res;''');
   }
 
   List<Expression> _getMethodAnnotation(
