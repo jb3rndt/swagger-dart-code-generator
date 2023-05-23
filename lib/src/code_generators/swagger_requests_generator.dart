@@ -434,9 +434,9 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
 $allModelsString
 try {
   return _$publicMethodName($parametersListString);
-} catch (e) {
+} catch (e, stack) {
   if (onError != null) {
-    return onError(e);
+    return onError!(e, stack);
   } else {
     rethrow;
   }
