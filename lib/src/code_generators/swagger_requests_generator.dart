@@ -425,7 +425,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
     bool isMultipart,
   ) {
     return [
-      refer(requestType.pascalCase).call(
+      refer("chopper.${requestType.pascalCase}").call(
         [],
         {
           kPath: literalString(path),
