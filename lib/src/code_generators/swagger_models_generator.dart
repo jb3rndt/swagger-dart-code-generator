@@ -1371,7 +1371,7 @@ $copyWithMethod
     }
 
     final splittedProperties = RegExp(
-      '.+ (.+);',
+      '\\S+ (\\S+);',
     ).allMatches(generatedProperties).map((e) => e.group(1)!);
 
     if (splittedProperties.isEmpty) {
@@ -1396,7 +1396,7 @@ $copyWithMethod
   String generateCopyWithContent(
       String generatedProperties, String validatedClassName) {
     final splittedCopyWithProperties = RegExp(
-      '(.+) (.+);',
+      '(\\S+) (\\S+);',
     ).allMatches(generatedProperties).map((e) {
       var type = e.group(1)!;
       if (!type.endsWith('?') && type != kDynamic) {
@@ -1406,7 +1406,7 @@ $copyWithMethod
     });
 
     final splittedCopyWithWrappedProperties = RegExp(
-      '(.+) (.+);',
+      '(\\S+) (\\S+);',
     ).allMatches(generatedProperties).map((e) {
       return 'Wrapped<${e.group(1)!}>? ${e.group(2)!}';
     });
@@ -1451,7 +1451,7 @@ $copyWithMethod
     }
 
     final propertiesHash = RegExp(
-      '.+ (.+);',
+      '\\S+ (\\S+);',
     )
         .allMatches(generatedProperties)
         .map((e) => e.group(1)!)
