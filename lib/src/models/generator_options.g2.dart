@@ -28,6 +28,12 @@ GeneratorOptions _$GeneratorOptionsFromJson(Map json) => GeneratorOptions(
                       Map<String, dynamic>.from(e as Map)))
                   .toList() ??
               [],
+      inheritanceValueMap:
+          (json['inheritance_value_map'] as List<dynamic>?)
+                  ?.map((e) => InheritanceValueMap.fromJson(
+                      Map<String, dynamic>.from(e as Map)))
+                  .toList() ??
+              [],
       responseOverrideValueMap:
           (json['response_override_value_map'] as List<dynamic>?)
                   ?.map((e) => ResponseOverrideValueMap.fromJson(
@@ -129,6 +135,18 @@ Map<String, dynamic> _$DefaultValueMapToJson(DefaultValueMap instance) =>
     <String, dynamic>{
       'type_name': instance.typeName,
       'default_value': instance.defaultValue,
+    };
+
+InheritanceValueMap _$InheritanceValueMapFromJson(Map<String, dynamic> json) =>
+    InheritanceValueMap(
+      superClass: json['super_class'] as String? ?? '',
+      baseClass: json['base_class'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$InheritanceValueMapToJson(InheritanceValueMap instance) =>
+    <String, dynamic>{
+      'super_class': instance.superClass,
+      'base_class': instance.baseClass,
     };
 
 ResponseOverrideValueMap _$ResponseOverrideValueMapFromJson(

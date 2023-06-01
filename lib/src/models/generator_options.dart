@@ -15,6 +15,7 @@ class GeneratorOptions {
     this.defaultValuesMap = const <DefaultValueMap>[],
     this.defaultHeaderValuesMap = const <DefaultHeaderValueMap>[],
     this.responseOverrideValueMap = const <ResponseOverrideValueMap>[],
+    this.inheritanceValueMap = const <InheritanceValueMap>[],
     required this.inputFolder,
     required this.outputFolder,
     this.enumsCaseSensitive = true,
@@ -120,6 +121,9 @@ class GeneratorOptions {
   @JsonKey(defaultValue: <ResponseOverrideValueMap>[])
   final List<ResponseOverrideValueMap> responseOverrideValueMap;
 
+  @JsonKey(defaultValue: <InheritanceValueMap>[])
+  final List<InheritanceValueMap> inheritanceValueMap;
+
   @JsonKey(defaultValue: [])
   final List<String> includePaths;
 
@@ -174,6 +178,25 @@ class ResponseOverrideValueMap {
 
   /// Convert this default value map instance to JSON.
   Map<String, dynamic> toJson() => _$ResponseOverrideValueMapToJson(this);
+}
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+class InheritanceValueMap {
+  InheritanceValueMap(
+      {required this.superClass, required this.baseClass});
+
+  /// Build a default value map from a JSON map.
+  factory InheritanceValueMap.fromJson(Map<String, dynamic> json) =>
+      _$InheritanceValueMapFromJson(json);
+
+  @JsonKey(defaultValue: '')
+  final String superClass;
+
+  @JsonKey(defaultValue: '')
+  final String baseClass;
+
+  /// Convert this default value map instance to JSON.
+  Map<String, dynamic> toJson() => _$InheritanceValueMapToJson(this);
 }
 
 @JsonSerializable(fieldRename: FieldRename.snake)
