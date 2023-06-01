@@ -1188,6 +1188,7 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
     required List<String> requiredProperties,
     required List<String> allEnumNames,
     required List<String> allEnumListNames,
+    required Map<String, dynamic> attributes,
   }) {
     if (entityMap.isEmpty) {
       return '';
@@ -1203,11 +1204,13 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
 
       propertyNames.add(fieldName);
 
+      final thisOrSuper = attributes.containsKey(key) ? "this": "super";
+
       if (options.nullableModels.contains(className) ||
           !requiredProperties.contains(key)) {
-        results += '\t\tthis.$fieldName,\n';
+        results += '\t\t$thisOrSuper.$fieldName,\n';
       } else {
-        results += '\t\t$kRequired this.$fieldName,\n';
+        results += '\t\t$kRequired $thisOrSuper.$fieldName,\n';
       }
     });
 
@@ -1227,6 +1230,16 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
   ) {
     final properties = getModelProperties(schema, schemas, allClasses);
 
+    late final Map<String, SwaggerSchema> attributes;
+    
+    final inheritsFrom = options.inheritanceValueMap.firstWhereOrNull((element) => element.superClass == className)?.baseClass;
+
+    if(inheritsFrom != null) {
+      attributes = <String, SwaggerSchema>{}..addEntries(properties.entries.where((element) => allClasses[inheritsFrom]!.properties[element.key] == null));
+    } else {
+      attributes = properties;
+    }
+
     final requiredProperties = _getRequired(schema, schemas);
 
     final generatedConstructorProperties = generateConstructorPropertiesContent(
@@ -1236,6 +1249,20 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
       allEnumNames: allEnumNames,
       allEnumListNames: allEnumListNames,
       requiredProperties: requiredProperties,
+      attributes: attributes,
+    );
+
+    final generatedAttributes = generatePropertiesContent(
+      root,
+      attributes,
+      schemas,
+      className,
+      defaultValues,
+      classesWithNullableLists,
+      allEnumNames,
+      allEnumListNames,
+      requiredProperties,
+      allClasses,
     );
 
     final generatedProperties = generatePropertiesContent(
@@ -1253,6 +1280,8 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
 
     final validatedClassName =
         '${getValidatedClassName(className)}${options.modelPostfix}';
+
+    final extendsString = inheritsFrom != null ? 'extends ${getValidatedClassName(inheritsFrom)}${options.modelPostfix}' : '';
 
     final copyWithMethod =
         generateCopyWithContent(generatedProperties, validatedClassName);
@@ -1284,11 +1313,11 @@ String toString() => jsonEncode(this);
 
     final generatedClass = '''
 @JsonSerializable(explicitToJson: true $createToJson)
-class $validatedClassName{
+class $validatedClassName $extendsString{
 \t$validatedClassName($generatedConstructorProperties);\n
 \t$fromJson\n
 \t$toJson\n
-$generatedProperties
+$generatedAttributes
 \tstatic const fromJsonFactory = _\$${validatedClassName}FromJson;
 
 $equalsOverride
