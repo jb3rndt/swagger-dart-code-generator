@@ -182,8 +182,7 @@ class ResponseOverrideValueMap {
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class InheritanceValueMap {
-  InheritanceValueMap(
-      {required this.superClass, required this.baseClass});
+  InheritanceValueMap({required this.superClass, required this.baseClass});
 
   /// Build a default value map from a JSON map.
   factory InheritanceValueMap.fromJson(Map<String, dynamic> json) =>

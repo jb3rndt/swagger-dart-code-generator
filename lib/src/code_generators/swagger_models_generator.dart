@@ -1204,7 +1204,7 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
 
       propertyNames.add(fieldName);
 
-      final thisOrSuper = attributes.containsKey(key) ? "this": "super";
+      final thisOrSuper = attributes.containsKey(key) ? "this" : "super";
 
       if (options.nullableModels.contains(className) ||
           !requiredProperties.contains(key)) {
@@ -1232,10 +1232,14 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
 
     late final Map<String, SwaggerSchema> attributes;
 
-    final inheritsFrom = options.inheritanceValueMap.firstWhereOrNull((element) => element.superClass == className)?.baseClass;
+    final inheritsFrom = options.inheritanceValueMap
+        .firstWhereOrNull((element) => element.superClass == className)
+        ?.baseClass;
 
-    if(inheritsFrom != null) {
-      attributes = <String, SwaggerSchema>{}..addEntries(properties.entries.where((element) => allClasses[inheritsFrom]!.properties[element.key] == null));
+    if (inheritsFrom != null) {
+      attributes = <String, SwaggerSchema>{}..addEntries(properties.entries
+          .where((element) =>
+              allClasses[inheritsFrom]!.properties[element.key] == null));
     } else {
       attributes = properties;
     }
@@ -1281,7 +1285,9 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
     final validatedClassName =
         '${getValidatedClassName(className)}${options.modelPostfix}';
 
-    final extendsString = inheritsFrom != null ? 'extends ${getValidatedClassName(inheritsFrom)}${options.modelPostfix}' : '';
+    final extendsString = inheritsFrom != null
+        ? 'extends ${getValidatedClassName(inheritsFrom)}${options.modelPostfix}'
+        : '';
 
     final copyWithMethod =
         generateCopyWithContent(generatedProperties, validatedClassName);

@@ -59,25 +59,22 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
       swaggerRoot.basePath,
     );
 
-    return Class(
-      (c) => c
-        ..methods.addAll([
-          _generateCreateMethod(className, chopperClient),
-          ...allMethodsContent
-        ])
-        ..extend = Reference(kChopperService)
-        ..docs.add(kServiceHeader)
-        ..annotations.add(refer(kChopperApi).call([]))
-        ..abstract = true
-        ..name = className
-        ..fields.add(Field(
-              (f) =>
-          f
-            ..name = '_convertTransportError'
-            ..type = Reference('Object Function(dynamic, StackTrace)?')
-            ..static = true,
-        ))
-    );
+    return Class((c) => c
+      ..methods.addAll([
+        _generateCreateMethod(className, chopperClient),
+        ...allMethodsContent
+      ])
+      ..extend = Reference(kChopperService)
+      ..docs.add(kServiceHeader)
+      ..annotations.add(refer(kChopperApi).call([]))
+      ..abstract = true
+      ..name = className
+      ..fields.add(Field(
+        (f) => f
+          ..name = '_convertTransportError'
+          ..type = Reference('Object Function(dynamic, StackTrace)?')
+          ..static = true,
+      )));
   }
 
   Method _generateCreateMethod(String className, String body) {
@@ -111,8 +108,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
             ..name = 'interceptors',
         ))
         ..optionalParameters.add(Parameter(
-              (p) =>
-          p
+          (p) => p
             ..named = true
             ..type = Reference('Object Function(dynamic, StackTrace)?')
             ..name = 'convertTransportError',
@@ -181,7 +177,9 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
 
           returns = '${options.customReturnType}<$innerResponseType>';
         } else {
-          returns = returnTypeName.isEmpty ? kFutureResponse : returnTypeName.asFutureResponse();
+          returns = returnTypeName.isEmpty
+              ? kFutureResponse
+              : returnTypeName.asFutureResponse();
         }
 
         final hasOptionalBody =
@@ -429,8 +427,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
           'generatedMapping.putIfAbsent($model, () => $model.fromJsonFactory);\n';
     });
 
-    return Code(
-        '''
+    return Code('''
 $allModelsString
 try {
   var result = await _$publicMethodName($parametersListString);
