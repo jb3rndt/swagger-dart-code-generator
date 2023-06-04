@@ -73,6 +73,7 @@ import 'package:chopper/chopper.dart' as chopper;''';
 // ignore_for_file: type=lint
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:json_annotation/json_annotation.dart' as json;
 import 'package:collection/collection.dart';
 ${options.overrideToString ? "import 'dart:convert';" : ''}
 """);
@@ -123,7 +124,7 @@ String? _dateToJson(DateTime? date) {
   {
     return null;
   }
-  
+
   final year = date.year.toString();
   final month = date.month < 10 ? '0\${date.month}' : date.month.toString();
   final day = date.day < 10 ? '0\${date.day}' : date.day.toString();

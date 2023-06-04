@@ -1231,7 +1231,7 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
     final properties = getModelProperties(schema, schemas, allClasses);
 
     late final Map<String, SwaggerSchema> attributes;
-    
+
     final inheritsFrom = options.inheritanceValueMap.firstWhereOrNull((element) => element.superClass == className)?.baseClass;
 
     if(inheritsFrom != null) {
@@ -1313,6 +1313,7 @@ String toString() => jsonEncode(this);
 
     final generatedClass = '''
 @JsonSerializable(explicitToJson: true $createToJson)
+@LocalDateTimeConverter()
 class $validatedClassName $extendsString{
 \t$validatedClassName($generatedConstructorProperties);\n
 \t$fromJson\n

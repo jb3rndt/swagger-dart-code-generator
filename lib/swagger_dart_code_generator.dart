@@ -299,6 +299,16 @@ $imports
 
 ${options.buildOnlyModels ? '' : requests}
 
+class LocalDateTimeConverter implements json.JsonConverter<DateTime, String> {
+  const LocalDateTimeConverter();
+
+  @override
+  DateTime fromJson(String json) => DateTime.parse(json).toLocal();
+
+  @override
+  String toJson(DateTime object) => object.toIso8601String();
+}
+
 $models
 
 ${options.buildOnlyModels ? '' : customDecoder}
