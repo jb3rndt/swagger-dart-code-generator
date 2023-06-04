@@ -74,7 +74,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
               (f) =>
           f
             ..name = '_convertTransportError'
-            ..type = Reference('Exception Function(dynamic, StackTrace)?')
+            ..type = Reference('dynamic Function(dynamic, StackTrace)?')
             ..static = true,
         ))
     );
@@ -114,7 +114,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
               (p) =>
           p
             ..named = true
-            ..type = Reference('Exception Function(dynamic, StackTrace)?')
+            ..type = Reference('dynamic Function(dynamic, StackTrace)?')
             ..name = 'convertTransportError',
         ))
         ..body = Code(body),
