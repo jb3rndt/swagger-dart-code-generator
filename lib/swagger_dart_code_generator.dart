@@ -302,7 +302,7 @@ class LocalDateTimeConverter implements json.JsonConverter<DateTime, String> {
   DateTime fromJson(String json) => DateTime.parse(json).toLocal();
 
   @override
-  String toJson(DateTime object) => object.toIso8601String();
+  String toJson(DateTime object) => object.toString();
 }
 
 $models
