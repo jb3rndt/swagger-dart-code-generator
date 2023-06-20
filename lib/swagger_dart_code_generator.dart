@@ -305,6 +305,15 @@ class LocalDateTimeConverter implements json.JsonConverter<DateTime, String> {
   String toJson(DateTime object) => object.toString();
 }
 
+class OpenApiException implements Exception {
+  const OpenApiException(this.error);
+
+  final Object error;
+
+  @override
+  String toString() => 'OpenApiException: \${error.toString()}';
+}
+
 $models
 
 ${options.buildOnlyModels ? '' : customDecoder}

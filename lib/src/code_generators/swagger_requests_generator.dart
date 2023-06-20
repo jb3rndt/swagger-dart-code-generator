@@ -434,7 +434,7 @@ try {
   if (result.isSuccessful) {
     return result;
   }
-  throw result.error!;
+  throw OpenApiException(result.error!);
 } catch (e, stack) {
   if (_convertTransportError != null) {
     throw _convertTransportError!(e, stack);
