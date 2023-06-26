@@ -302,7 +302,7 @@ class LocalDateTimeConverter implements json.JsonConverter<DateTime, String> {
   DateTime fromJson(String json) => DateTime.parse(json).toLocal();
 
   @override
-  String toJson(DateTime object) => object.toString();
+  String toJson(DateTime object) => object.toUtc().toString();
 }
 
 class OpenApiException implements Exception {
