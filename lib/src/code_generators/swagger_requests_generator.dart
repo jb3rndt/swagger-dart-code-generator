@@ -72,7 +72,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
       ..fields.add(Field(
         (f) => f
           ..name = '_convertTransportError'
-          ..type = Reference('Object Function(dynamic, StackTrace)?')
+          ..type = Reference('Object? Function(dynamic, StackTrace)?')
           ..static = true,
       )));
   }
@@ -110,7 +110,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
         ..optionalParameters.add(Parameter(
           (p) => p
             ..named = true
-            ..type = Reference('Object Function(dynamic, StackTrace)?')
+            ..type = Reference('Object? Function(dynamic, StackTrace)?')
             ..name = 'convertTransportError',
         ))
         ..body = Code(body),
@@ -436,8 +436,9 @@ try {
   }
   throw OpenApiException(result.error!);
 } catch (e, stack) {
-  if (_convertTransportError != null) {
-    throw _convertTransportError!(e, stack);
+  final convErr = _convertTransportError?.call(e, stack);
+  if (convErr != null) {
+    throw convErr;
   } else {
     rethrow;
   }
