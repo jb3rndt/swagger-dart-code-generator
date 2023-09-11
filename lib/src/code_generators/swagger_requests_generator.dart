@@ -71,8 +71,8 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
       ..name = className
       ..fields.add(Field(
         (f) => f
-          ..name = '_convertTransportError'
-          ..type = Reference('Object? Function(dynamic, StackTrace)?')
+          ..name = '_handleConnection'
+          ..type = Reference('Future<void> Function(Future<void> Function())?')
           ..static = true,
       )));
   }
@@ -110,8 +110,9 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
         ..optionalParameters.add(Parameter(
           (p) => p
             ..named = true
-            ..type = Reference('Object? Function(dynamic, StackTrace)?')
-            ..name = 'convertTransportError',
+            ..type =
+                Reference('Future<void> Function(Future<void> Function())?')
+            ..name = 'handleConnection',
         ))
         ..body = Code(body),
     );
@@ -397,6 +398,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
           parameters,
           method.name!,
           allModels,
+          method.returns,
         ),
     );
   }
@@ -405,6 +407,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
     Iterable<Parameter> parameters,
     String publicMethodName,
     List<String> allModels,
+    Reference? returnType,
   ) {
     final parametersListString = parameters.map((p) {
       if (p.type!.symbol!.startsWith('enums.')) {
@@ -429,20 +432,15 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
 
     return Code('''
 $allModelsString
-try {
-  var result = await _$publicMethodName($parametersListString);
-  if (result.isSuccessful) {
-    return result;
-  }
-  throw OpenApiException(result.error!);
-} catch (e, stack) {
-  final convErr = _convertTransportError?.call(e, stack);
-  if (convErr != null) {
-    throw convErr;
-  } else {
-    rethrow;
-  }
-}''');
+if(_handleConnection != null) {
+  ${returnType?.symbol ?? 'var'}? response;
+  await _handleConnection!(() async {
+    response = _$publicMethodName($parametersListString);
+  });
+  return response!;
+}
+return _$publicMethodName($parametersListString);
+''');
   }
 
   List<Expression> _getMethodAnnotation(
@@ -1254,7 +1252,7 @@ try {
         : 'converter: chopper.JsonConverter(),';
 
     final chopperClientBody = '''
-    _convertTransportError = convertTransportError;
+    _handleConnection = handleConnection;
 
     if(client!=null){
       return _\$$className(client);
