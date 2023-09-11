@@ -753,7 +753,7 @@ if (_handleConnection != null) {
                     requestBody.content!.schema!.ref.getRef()))
                 ..named = true
                 ..annotations.add(
-                  refer(kPart.pascalCase).call([]),
+                  refer(kPartFile.pascalCase).call([]),
                 ),
             ),
           );
