@@ -72,7 +72,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
       ..fields.add(Field(
         (f) => f
           ..name = '_handleConnection'
-          ..type = Reference('Future<void> Function(Future<void> Function())?')
+          ..type = Reference('Future<dynamic> Function(Future<chopper.Response<dynamic>> Function())?')
           ..static = true,
       )));
   }
@@ -123,7 +123,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
           (p) => p
             ..named = true
             ..type =
-                Reference('Future<void> Function(Future<void> Function())?')
+                Reference('Future<dynamic> Function(Future<chopper.Response<dynamic>> Function())?')
             ..name = 'handleConnection',
         ))
         ..body = Code(body),
@@ -448,15 +448,13 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
 
     return Code('''
 $allModelsString
-if(_handleConnection != null) {
-  ${returnType?.symbol ?? 'var'}? response;
-  await _handleConnection!(() async {
-    response = _$publicMethodName($parametersListString);
-    await response;
+if (_handleConnection != null) {
+  return await _handleConnection!(() async {
+    return await _$publicMethodName($parametersListString);
   });
-  return response!;
+} else {
+  return await _$publicMethodName($parametersListString);
 }
-return _$publicMethodName($parametersListString);
 ''');
   }
 
