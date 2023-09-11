@@ -1,3 +1,29 @@
+# 2.11.10
+
+* Bump `package:http` to `^1.0.0`
+* Bump minimum dart version to `^3.0.0`
+* Fixed #625 generation of query enum parameters
+
+# 2.11.8
+
+* Fixed generation of fields of some models
+
+# 2.11.7
+
+* Updated SDK version
+
+# 2.11.6
+
+* Fixed generation of anyOf ref properties ([#613](https://github.com/epam-cross-platform-lab/swagger-dart-code-generator/issues/613))
+
+# 2.11.5
+
+* Fixed generation of very complex models inside of arrays inside of models etc.
+
+# 2.11.4
+
+* Fixed generation of models without properties and sample types
+
 # 2.11.3
 
 * Some fixed and refactoring
@@ -15,6 +41,9 @@
 * Code refactoring
 * ***Breaking*** Changed naming of Responses, RequestBodies
 
+# 2.10.5
+
+* Added converter as optional parameter for create()
 # 2.10.4
 
 * Fixed generation of multipart body parameters
@@ -464,7 +493,7 @@ typedef ClassName = Map<String, dynamic>
 # 2.0.8+1
 
 * Fixed class Attribute / Request Param collision([#187](https://github.com/epam-cross-platform-lab/swagger-dart-code-generator/issues/187))
-* Fixed enum maps in swagger.g.dart are missing `enums.`([#188](https://github.com/epam-cross-platform-lab/swagger-dart-code-generator/issues/188)) 
+* Fixed enum maps in swagger.g.dart are missing `enums.`([#188](https://github.com/epam-cross-platform-lab/swagger-dart-code-generator/issues/188))
 
 # 2.0.8
 

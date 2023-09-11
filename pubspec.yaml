@@ -1,6 +1,6 @@
 name: swagger_dart_code_generator
 
-version: 2.11.3
+version: 2.11.8
 
 homepage: https://github.com/epam-cross-platform-lab/swagger-dart-code-generator
 repository: https://github.com/epam-cross-platform-lab/swagger-dart-code-generator
@@ -24,14 +24,14 @@ environment:
 dependencies:
   build: ^2.2.1
   path: ^1.8.0
-  markdown: '>=5.0.0 <8.0.0'
+  markdown: ">=5.0.0 <8.0.0"
   recase: ^4.0.0
   json_annotation: ^4.4.0
   universal_io: ^2.0.4
   collection: ^1.15.0
   dart_style: ^2.2.1
   code_builder: ^4.1.0
-  http: ^0.13.4
+  http: ^1.0.0
   yaml: ^3.1.0
 
 dev_dependencies:

@@ -20,7 +20,7 @@ abstract class SwaggerGeneratorBase {
     }
 
     if (exceptionWords.contains(className)) {
-      return 'Object';
+      className = '\$$className';
     }
 
     if (className.isEmpty) {

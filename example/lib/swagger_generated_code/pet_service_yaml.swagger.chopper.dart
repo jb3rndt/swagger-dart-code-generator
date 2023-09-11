@@ -99,12 +99,12 @@ class _$PetServiceYaml extends PetServiceYaml {
   @override
   Future<Response<Pet>> _petPetIdGet({
     required int? petId,
-    String? apiKey,
+    InvalidType apiKey,
     String? cacheControl,
   }) {
     final Uri $url = Uri.parse('/pet/${petId}');
     final Map<String, String> $headers = {
-      if (apiKey != null) 'api_key': apiKey,
+      'api_key': apiKey,
       if (cacheControl != null) 'Cache-Control': cacheControl,
     };
     final Request $request = Request(
@@ -188,12 +188,12 @@ class _$PetServiceYaml extends PetServiceYaml {
 
   @override
   Future<Response<Object>> _storeInventoryGet({
-    String? apiKey,
+    InvalidType apiKey,
     String? cacheControl,
   }) {
     final Uri $url = Uri.parse('/store/inventory');
     final Map<String, String> $headers = {
-      if (apiKey != null) 'api_key': apiKey,
+      'api_key': apiKey,
       if (cacheControl != null) 'Cache-Control': cacheControl,
     };
     final Request $request = Request(

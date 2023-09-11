@@ -6,8 +6,51 @@ part of 'pet_service_json.swagger.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+Order _$OrderFromJson(Map<String, dynamic> json) => Order(
+      id: json['id'] as int?,
+      petId: json['petId'] as int?,
+      quantity: json['quantity'] as int?,
+      shipDate: _$JsonConverterFromJson<String, DateTime>(
+          json['shipDate'], const LocalDateTimeConverter().fromJson),
+      status: orderStatusFromJson(json['status']),
+      complete: json['complete'] as bool? ?? false,
+    );
+
+Map<String, dynamic> _$OrderToJson(Order instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('id', instance.id);
+  writeNotNull('petId', instance.petId);
+  writeNotNull('quantity', instance.quantity);
+  writeNotNull(
+      'shipDate',
+      _$JsonConverterToJson<String, DateTime>(
+          instance.shipDate, const LocalDateTimeConverter().toJson));
+  writeNotNull('status', orderStatusToJson(instance.status));
+  writeNotNull('complete', instance.complete);
+  return val;
+}
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) =>
+    json == null ? null : fromJson(json as Json);
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) =>
+    value == null ? null : toJson(value);
+
 Category _$CategoryFromJson(Map<String, dynamic> json) => Category(
-      id: json['id'] as num?,
+      id: json['id'] as int?,
       name: json['name'] as String? ?? '',
     );
 
@@ -26,7 +69,7 @@ Map<String, dynamic> _$CategoryToJson(Category instance) {
 }
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
-      id: json['id'] as num?,
+      id: json['id'] as int?,
       username: json['username'] as String? ?? '',
       firstName: json['firstName'] as String? ?? '',
       lastName: json['lastName'] as String? ?? '',
@@ -57,7 +100,7 @@ Map<String, dynamic> _$UserToJson(User instance) {
 }
 
 Tag _$TagFromJson(Map<String, dynamic> json) => Tag(
-      id: json['id'] as num?,
+      id: json['id'] as int?,
       name: json['name'] as String? ?? '',
     );
 
@@ -76,7 +119,7 @@ Map<String, dynamic> _$TagToJson(Tag instance) {
 }
 
 Pet _$PetFromJson(Map<String, dynamic> json) => Pet(
-      id: json['id'] as num?,
+      id: json['id'] as int?,
       category: json['category'] == null
           ? null
           : Category.fromJson(json['category'] as Map<String, dynamic>),

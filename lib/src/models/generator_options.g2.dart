@@ -8,6 +8,8 @@ part of 'generator_options.dart';
 
 GeneratorOptions _$GeneratorOptionsFromJson(Map json) => GeneratorOptions(
       withBaseUrl: json['with_base_url'] as bool? ?? true,
+      addBasePathToRequests:
+          json['add_base_path_to_requests'] as bool? ?? false,
       withConverter: json['with_converter'] as bool? ?? true,
       ignoreHeaders: json['ignore_headers'] as bool? ?? false,
       separateModels: json['separate_models'] as bool? ?? false,
@@ -93,6 +95,7 @@ Map<String, dynamic> _$GeneratorOptionsToJson(GeneratorOptions instance) =>
     <String, dynamic>{
       'use_path_for_request_names': instance.usePathForRequestNames,
       'with_base_url': instance.withBaseUrl,
+      'add_base_path_to_requests': instance.addBasePathToRequests,
       'page_width': instance.pageWidth,
       'override_to_string': instance.overrideToString,
       'override_equals_and_hashcode': instance.overrideEqualsAndHashcode,
