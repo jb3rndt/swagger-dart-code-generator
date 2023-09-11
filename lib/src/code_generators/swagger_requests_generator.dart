@@ -436,6 +436,7 @@ if(_handleConnection != null) {
   ${returnType?.symbol ?? 'var'}? response;
   await _handleConnection!(() async {
     response = _$publicMethodName($parametersListString);
+    await response;
   });
   return response!;
 }
