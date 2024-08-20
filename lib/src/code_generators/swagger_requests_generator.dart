@@ -116,7 +116,7 @@ class SwaggerRequestsGenerator extends SwaggerGeneratorBase {
         ..optionalParameters.add(Parameter(
           (p) => p
             ..named = true
-            ..type = Reference('Iterable<dynamic>?')
+            ..type = Reference('Iterable<chopper.Interceptor>?')
             ..name = 'interceptors',
         ))
         ..optionalParameters.add(Parameter(
@@ -740,7 +740,6 @@ if (_handleConnection != null) {
         if (schema?.ref.isNotEmpty == true) {
           schema = root.allSchemas[schema?.ref.getUnformattedRef()];
         }
-
 
         if (schema?.properties.isEmpty == true) {
           result.add(
