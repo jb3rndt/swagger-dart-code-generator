@@ -1278,6 +1278,9 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
         .firstWhereOrNull((element) => element.superClass == className)
         ?.baseClass;
 
+    print(inheritsFrom);
+    print(allClasses.keys);
+
     if (inheritsFrom != null) {
       attributes = <String, SwaggerSchema>{}..addEntries(properties.entries
           .where((element) =>
