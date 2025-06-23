@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'pet_service_yaml.swagger.dart';
+part of 'some_file_name.swagger.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

@@ -5,7 +5,6 @@ import 'package:json_annotation/json_annotation.dart' as json;
 import 'package:collection/collection.dart';
 import 'dart:convert';
 
-import '../overriden_models.dart';
 import 'package:chopper/chopper.dart';
 
 import 'client_mapping.dart';
@@ -13,22 +12,22 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart' show MultipartFile;
 import 'package:chopper/chopper.dart' as chopper;
-import 'pet_service_json.enums.swagger.dart' as enums;
-export 'pet_service_json.enums.swagger.dart';
+import 'some_file_name.enums.swagger.dart' as enums;
+export 'some_file_name.enums.swagger.dart';
 
-part 'pet_service_json.swagger.chopper.dart';
-part 'pet_service_json.swagger.g.dart';
+part 'some_file_name.swagger.chopper.dart';
+part 'some_file_name.swagger.g.dart';
 
 // **************************************************************************
 // SwaggerChopperGenerator
 // **************************************************************************
 
 @ChopperApi()
-abstract class PetServiceJson extends ChopperService {
+abstract class SomeFileName extends ChopperService {
   static Future<dynamic> Function(Future<Response<dynamic>> Function())?
   _handleConnection;
 
-  static PetServiceJson create({
+  static SomeFileName create({
     ChopperClient? client,
     http.Client? httpClient,
     Authenticator? authenticator,
@@ -42,11 +41,11 @@ abstract class PetServiceJson extends ChopperService {
     _handleConnection = handleConnection;
 
     if (client != null) {
-      return _$PetServiceJson(client);
+      return _$SomeFileName(client);
     }
 
     final newClient = ChopperClient(
-      services: [_$PetServiceJson()],
+      services: [_$SomeFileName()],
       converter: converter ?? $JsonSerializableConverter(),
       interceptors: interceptors ?? [],
       client: httpClient,
@@ -54,7 +53,7 @@ abstract class PetServiceJson extends ChopperService {
       errorConverter: errorConverter,
       baseUrl: baseUrl ?? Uri.parse('http://petstore.swagger.io/v2'),
     );
-    return _$PetServiceJson(newClient);
+    return _$SomeFileName(newClient);
   }
 
   ///Add a new pet to the store
@@ -716,6 +715,121 @@ class OpenApiException implements Exception {
 
 @JsonSerializable(explicitToJson: true)
 @LocalDateTimeConverter()
+class Order {
+  const Order({
+    this.id,
+    this.petId,
+    this.quantity,
+    this.shipDate,
+    this.status,
+    this.complete,
+  });
+
+  factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
+
+  static const toJsonFactory = _$OrderToJson;
+  Map<String, dynamic> toJson() => _$OrderToJson(this);
+
+  @JsonKey(name: 'id', includeIfNull: false)
+  final int? id;
+  @JsonKey(name: 'petId', includeIfNull: false)
+  final int? petId;
+  @JsonKey(name: 'quantity', includeIfNull: false)
+  final int? quantity;
+  @JsonKey(name: 'shipDate', includeIfNull: false)
+  final DateTime? shipDate;
+  @JsonKey(
+    name: 'status',
+    includeIfNull: false,
+    toJson: orderStatusNullableToJson,
+    fromJson: orderStatusNullableFromJson,
+  )
+  final enums.OrderStatus? status;
+  @JsonKey(name: 'complete', includeIfNull: false, defaultValue: false)
+  final bool? complete;
+  static const fromJsonFactory = _$OrderFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is Order &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.petId, petId) ||
+                const DeepCollectionEquality().equals(other.petId, petId)) &&
+            (identical(other.quantity, quantity) ||
+                const DeepCollectionEquality().equals(
+                  other.quantity,
+                  quantity,
+                )) &&
+            (identical(other.shipDate, shipDate) ||
+                const DeepCollectionEquality().equals(
+                  other.shipDate,
+                  shipDate,
+                )) &&
+            (identical(other.status, status) ||
+                const DeepCollectionEquality().equals(other.status, status)) &&
+            (identical(other.complete, complete) ||
+                const DeepCollectionEquality().equals(
+                  other.complete,
+                  complete,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(petId) ^
+      const DeepCollectionEquality().hash(quantity) ^
+      const DeepCollectionEquality().hash(shipDate) ^
+      const DeepCollectionEquality().hash(status) ^
+      const DeepCollectionEquality().hash(complete) ^
+      runtimeType.hashCode;
+}
+
+extension $OrderExtension on Order {
+  Order copyWith({
+    int? id,
+    int? petId,
+    int? quantity,
+    DateTime? shipDate,
+    enums.OrderStatus? status,
+    bool? complete,
+  }) {
+    return Order(
+      id: id ?? this.id,
+      petId: petId ?? this.petId,
+      quantity: quantity ?? this.quantity,
+      shipDate: shipDate ?? this.shipDate,
+      status: status ?? this.status,
+      complete: complete ?? this.complete,
+    );
+  }
+
+  Order copyWithWrapped({
+    Wrapped<int?>? id,
+    Wrapped<int?>? petId,
+    Wrapped<int?>? quantity,
+    Wrapped<DateTime?>? shipDate,
+    Wrapped<enums.OrderStatus?>? status,
+    Wrapped<bool?>? complete,
+  }) {
+    return Order(
+      id: (id != null ? id.value : this.id),
+      petId: (petId != null ? petId.value : this.petId),
+      quantity: (quantity != null ? quantity.value : this.quantity),
+      shipDate: (shipDate != null ? shipDate.value : this.shipDate),
+      status: (status != null ? status.value : this.status),
+      complete: (complete != null ? complete.value : this.complete),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+@LocalDateTimeConverter()
 class Category {
   const Category({this.id, this.name});
 
@@ -945,6 +1059,118 @@ extension $TagExtension on Tag {
     return Tag(
       id: (id != null ? id.value : this.id),
       name: (name != null ? name.value : this.name),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+@LocalDateTimeConverter()
+class Pet {
+  const Pet({
+    this.id,
+    this.category,
+    required this.name,
+    required this.photoUrls,
+    this.tags,
+    this.status,
+  });
+
+  factory Pet.fromJson(Map<String, dynamic> json) => _$PetFromJson(json);
+
+  static const toJsonFactory = _$PetToJson;
+  Map<String, dynamic> toJson() => _$PetToJson(this);
+
+  @JsonKey(name: 'id', includeIfNull: false)
+  final int? id;
+  @JsonKey(name: 'category', includeIfNull: false)
+  final Category? category;
+  @JsonKey(name: 'name', includeIfNull: false, defaultValue: '')
+  final String? name;
+  @JsonKey(name: 'photoUrls', includeIfNull: false)
+  final List<String>? photoUrls;
+  @JsonKey(name: 'tags', includeIfNull: false)
+  final List<Tag>? tags;
+  @JsonKey(
+    name: 'status',
+    includeIfNull: false,
+    toJson: petStatusNullableToJson,
+    fromJson: petStatusNullableFromJson,
+  )
+  final enums.PetStatus? status;
+  static const fromJsonFactory = _$PetFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is Pet &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.category, category) ||
+                const DeepCollectionEquality().equals(
+                  other.category,
+                  category,
+                )) &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.photoUrls, photoUrls) ||
+                const DeepCollectionEquality().equals(
+                  other.photoUrls,
+                  photoUrls,
+                )) &&
+            (identical(other.tags, tags) ||
+                const DeepCollectionEquality().equals(other.tags, tags)) &&
+            (identical(other.status, status) ||
+                const DeepCollectionEquality().equals(other.status, status)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(category) ^
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(photoUrls) ^
+      const DeepCollectionEquality().hash(tags) ^
+      const DeepCollectionEquality().hash(status) ^
+      runtimeType.hashCode;
+}
+
+extension $PetExtension on Pet {
+  Pet copyWith({
+    int? id,
+    Category? category,
+    String? name,
+    List<String>? photoUrls,
+    List<Tag>? tags,
+    enums.PetStatus? status,
+  }) {
+    return Pet(
+      id: id ?? this.id,
+      category: category ?? this.category,
+      name: name ?? this.name,
+      photoUrls: photoUrls ?? this.photoUrls,
+      tags: tags ?? this.tags,
+      status: status ?? this.status,
+    );
+  }
+
+  Pet copyWithWrapped({
+    Wrapped<int?>? id,
+    Wrapped<Category?>? category,
+    Wrapped<String?>? name,
+    Wrapped<List<String>?>? photoUrls,
+    Wrapped<List<Tag>?>? tags,
+    Wrapped<enums.PetStatus?>? status,
+  }) {
+    return Pet(
+      id: (id != null ? id.value : this.id),
+      category: (category != null ? category.value : this.category),
+      name: (name != null ? name.value : this.name),
+      photoUrls: (photoUrls != null ? photoUrls.value : this.photoUrls),
+      tags: (tags != null ? tags.value : this.tags),
+      status: (status != null ? status.value : this.status),
     );
   }
 }

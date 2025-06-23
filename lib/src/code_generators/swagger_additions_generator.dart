@@ -49,9 +49,10 @@ class SwaggerAdditionsGenerator extends SwaggerGeneratorBase {
     final chopperPartImport =
         buildOnlyModels ? '' : "part '$swaggerFileName.swagger.chopper.dart';";
 
-    final overridenModels = options.overridenModels.isEmpty
-        ? ''
-        : 'import \'overriden_models.dart\';';
+    final overridenModels = options.overridenModels
+            .any((e) => e.fileName == swaggerFileName)
+        ? 'import \'${options.overridenModels.firstWhere((e) => e.fileName == swaggerFileName).importUrl}\';'
+        : '';
 
     final chopperImports = buildOnlyModels
         ? ''
@@ -70,8 +71,7 @@ import 'package:chopper/chopper.dart' as chopper;''';
     final enumsExport =
         hasEnums ? "export '$swaggerFileName.enums.swagger.dart';" : '';
 
-    if (hasModels && !separateModels) {
-      result.writeln("""
+    result.writeln("""
 // ignore_for_file: type=lint
 
 import 'package:json_annotation/json_annotation.dart';
@@ -79,7 +79,6 @@ import 'package:json_annotation/json_annotation.dart' as json;
 import 'package:collection/collection.dart';
 ${options.overrideToString ? "import 'dart:convert';" : ''}
 """);
-    }
 
     if (hasModels && separateModels) {
       result.write("import '$swaggerFileName.models.swagger.dart';");
@@ -199,6 +198,16 @@ class \$JsonSerializableConverter extends chopper.JsonConverter {
       // In rare cases, when let's say 204 (no content) is returned -
       // we cannot decode the missing json with the result type specified
       return chopper.Response(response.base, null, error: response.error);
+    }
+
+    if (ResultType == String) {
+      return response.copyWith();
+    }
+
+    if (ResultType == DateTime) {
+      return response.copyWith(
+          body: DateTime.parse((response.body as String).replaceAll('"', ''))
+              as ResultType);
     }
 
     final jsonRes = await super.convertResponse(response);

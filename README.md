@@ -28,7 +28,7 @@ In general case for each .swagger file three outputs will be created. </br>
 The generated code uses the following packages in run-time:
 ```yaml
 dependencies:
-  chopper: ^6.1.1
+  chopper: ^8.0.0
   json_annotation: ^4.8.0
 ```
 
@@ -36,27 +36,23 @@ Add the following to your `pubspec.yaml` file to be able to do code generation:
 ```yaml
 dev_dependencies:
   build_runner: ^2.3.3
-  chopper_generator: ^6.0.0
+  chopper_generator: ^8.0.0
   json_serializable: ^6.6.1
   swagger_dart_code_generator: ^2.10.4
 ```
 
 Then run:
 ```shell
-pub packages get
+dart pub get
 ```
 or
 ```shell
-flutter packages get
+flutter pub get
 ```
 
 Now SwaggerGenerator will generate the API files for you by running:
 ```shell
-pub run build_runner build
-```
-or
-```shell
-flutter pub run build_runner build
+dart run build_runner build
 ```
 
 ## **Configuration**
@@ -80,7 +76,7 @@ targets:
 | `use_required_attribute_for_headers` | `true` | `false` | If this option is false, generator will not add @required attribute to headers. |
 | `with_converter` | `true` | `false` | If option is true, combination of all mappings will be generated. |
 | `ignore_headers` | `false` | `false` | If option is true, headers will not be generated. |
-| `additional_headers` | `false` | `false` | List of additional headers, not specified in Swagger. Example of usage: [build.yaml](https://github.com/epam-cross-platform-lab/swagger-dart-code-generator/blob/master/example/build.yaml)
+| `additional_headers` | `false` | `false` | List of additional headers, not specified in Swagger. Example of usage: [build.yaml](https://github.com/epam-cross-platform-lab/swagger-dart-code-generator/blob/master/example/build.yaml) |
 | `enums_case_sensitive` | `true` | `false` | If value is false, 'enumValue' will be defined like Enum.enumValue even it's json key equals 'ENUMVALUE' |
 | `include_paths` | `[]` | `false` | List<String> of Regex If not empty - includes only paths matching reges |
 | `exclude_paths` | `[]` | `false` | List<String> of Regex If not empty -exclude paths matching reges |
@@ -93,8 +89,15 @@ targets:
 | `cut_from_model_names` | `-` | `false` | If your model names are long and contain a lot of duplicated words, for example `DbUsersModelsV3GeneralUserModel`, you can cut off duplicated part, using `cut_from_model_names : DbUsersModelsV3`. Also, you can use regex expressions in this parameter. |
 | `nullable_models` | `-` | `false` | List of model names should have force-nullable properties. Example of usage in [build.yaml](https://github.com/epam-cross-platform-lab/swagger-dart-code-generator/blob/master/example/build.yaml). |
 | `override_equals_and_hashcode` | `-` | `true` | If need to decrease app size - you can disable generation of `hashcode` and `Equals` method. |
-| `overriden_models` | `-` | `false` | List of manually written models that will replace the generated one. These models will not be generated. |
+| `overriden_models` | `-` | `false` | List of manually written models that will replace the generated one. Can be different for each file. See example [here](#overriden-models-implementation) |
 | `use_path_for_request_names` | `true` | `false` | Can be false only if all requests has unique `operationId`. It gives readable names for requests. |
+| `add_base_path_to_requests` | `false` | `false` | Add swagger base path to all request path. |
+| `multipart_file_type` | `List<int>` | `false` | Allow to override the generated class for multipart file (See #605). |
+| `override_to_string` | `bool` | `true` | Overrides `toString()` method using `jsonEncode(this)` |
+| `generate_first_succeed_response` | `true` | `false` | If request has multiple success responses, first one will be generated. Otherwice - `dynamic` |
+| `multipart_file_type` | `List<int>` | `false` | Type if input parameter of Multipart request |
+| `scalars` | `-` | `{}` | A map of custom types that are used for string properties with a given [format](https://swagger.io/docs/specification/data-models/data-types/#format). See example [here](#overriden-formats-implementation) |
+
 
 
 It's important to remember that, by default, [build](https://github.com/dart-lang/build) will follow [Dart's package layout conventions](https://dart.dev/tools/pub/package-layout), meaning that only some folders will be considered to parse the input files. So, if you want to reference files from a folder other than `lib/`, make sure you've included it on `sources`:
@@ -131,6 +134,42 @@ targets:
             - '\/cars\/get'
           include_paths:
             - '\/popular\/cars'
+```
+
+### **Overriden Models Implementation**
+
+```yaml
+      swagger_dart_code_generator:
+        options:
+          input_folder: "input_folder/"
+          output_folder: "lib/swagger_generated_code/"
+          overriden_models:
+            - file_name: "pet_service_json"
+              import_url: "../overriden_models.dart"
+              overriden_models:
+                - "Pet"
+                - "Order"
+            - file_name: "pet_service_swagger"
+              import_url: "../overriden_models_another.dart"
+              overriden_models:
+                - "Result"
+```
+
+### **Scalars Implementation**
+
+```yaml
+      swagger_dart_code_generator:
+        options:
+          input_folder: "input_folder/"
+          output_folder: "lib/swagger_generated_code/"
+          import_paths:
+            - "package:uuid/uuid.dart"
+          scalars:
+            uuid:
+              type: Uuid
+              deserialize: Uuid.parse
+              # optional - default is toString()
+              serialize: myCustomUuidSerializeFunction
 ```
 
 ### **Response Override Value Map for requests generation**

@@ -1,3 +1,4 @@
+// dart format width=80
 //Generated code
 
 part of 'pet_service_swagger.swagger.dart';
@@ -6,15 +7,16 @@ part of 'pet_service_swagger.swagger.dart';
 // ChopperGenerator
 // **************************************************************************
 
-// ignore_for_file: always_put_control_body_on_new_line, always_specify_types, prefer_const_declarations, unnecessary_brace_in_string_interps
-class _$PetServiceSwagger extends PetServiceSwagger {
+// coverage:ignore-file
+// ignore_for_file: type=lint
+final class _$PetServiceSwagger extends PetServiceSwagger {
   _$PetServiceSwagger([ChopperClient? client]) {
     if (client == null) return;
     this.client = client;
   }
 
   @override
-  final definitionType = PetServiceSwagger;
+  final Type definitionType = PetServiceSwagger;
 
   @override
   Future<Response<dynamic>> _petPost({
@@ -32,6 +34,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       client.baseUrl,
       body: $body,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<dynamic, dynamic>($request);
   }
@@ -52,13 +55,14 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       client.baseUrl,
       body: $body,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<dynamic, dynamic>($request);
   }
 
   @override
   Future<Response<List<Pet>>> _petFindByStatusGet({
-    required String? status,
+    required List<Object?>? status,
     String? cacheControl,
   }) {
     final Uri $url = Uri.parse('/pet/findByStatus');
@@ -72,6 +76,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       client.baseUrl,
       parameters: $params,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<List<Pet>, Pet>($request);
   }
@@ -92,6 +97,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       client.baseUrl,
       parameters: $params,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<List<Pet>, Pet>($request);
   }
@@ -99,12 +105,12 @@ class _$PetServiceSwagger extends PetServiceSwagger {
   @override
   Future<Response<Pet>> _petPetIdGet({
     required int? petId,
-    InvalidType apiKey,
+    String? apiKey,
     String? cacheControl,
   }) {
     final Uri $url = Uri.parse('/pet/${petId}');
     final Map<String, String> $headers = {
-      'api_key': apiKey,
+      if (apiKey != null) 'api_key': apiKey,
       if (cacheControl != null) 'Cache-Control': cacheControl,
     };
     final Request $request = Request(
@@ -112,6 +118,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       $url,
       client.baseUrl,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<Pet, Pet>($request);
   }
@@ -137,6 +144,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       client.baseUrl,
       body: $body,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<dynamic, dynamic>($request);
   }
@@ -157,6 +165,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       $url,
       client.baseUrl,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<dynamic, dynamic>($request);
   }
@@ -182,18 +191,19 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       client.baseUrl,
       body: $body,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<ApiResponse, ApiResponse>($request);
   }
 
   @override
   Future<Response<Object>> _storeInventoryGet({
-    InvalidType apiKey,
+    String? apiKey,
     String? cacheControl,
   }) {
     final Uri $url = Uri.parse('/store/inventory');
     final Map<String, String> $headers = {
-      'api_key': apiKey,
+      if (apiKey != null) 'api_key': apiKey,
       if (cacheControl != null) 'Cache-Control': cacheControl,
     };
     final Request $request = Request(
@@ -201,6 +211,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       $url,
       client.baseUrl,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<Object, Object>($request);
   }
@@ -221,6 +232,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       client.baseUrl,
       body: $body,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<Order, Order>($request);
   }
@@ -239,6 +251,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       $url,
       client.baseUrl,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<Order, Order>($request);
   }
@@ -257,6 +270,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       $url,
       client.baseUrl,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<dynamic, dynamic>($request);
   }
@@ -277,6 +291,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       client.baseUrl,
       body: $body,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<dynamic, dynamic>($request);
   }
@@ -297,6 +312,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       client.baseUrl,
       body: $body,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<dynamic, dynamic>($request);
   }
@@ -317,6 +333,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       client.baseUrl,
       body: $body,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<dynamic, dynamic>($request);
   }
@@ -341,6 +358,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       client.baseUrl,
       parameters: $params,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<String, String>($request);
   }
@@ -356,6 +374,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       $url,
       client.baseUrl,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<dynamic, dynamic>($request);
   }
@@ -374,6 +393,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       $url,
       client.baseUrl,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<User, User>($request);
   }
@@ -395,6 +415,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       client.baseUrl,
       body: $body,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<dynamic, dynamic>($request);
   }
@@ -413,6 +434,7 @@ class _$PetServiceSwagger extends PetServiceSwagger {
       $url,
       client.baseUrl,
       headers: $headers,
+      includeNullQueryVars: true,
     );
     return client.send<dynamic, dynamic>($request);
   }

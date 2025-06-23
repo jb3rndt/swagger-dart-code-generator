@@ -1,7 +1,7 @@
 // dart format width=80
 //Generated code
 
-part of 'pet_service_yaml.swagger.dart';
+part of 'some_file_name.swagger.dart';
 
 // **************************************************************************
 // ChopperGenerator
@@ -9,14 +9,14 @@ part of 'pet_service_yaml.swagger.dart';
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-final class _$PetServiceYaml extends PetServiceYaml {
-  _$PetServiceYaml([ChopperClient? client]) {
+final class _$SomeFileName extends SomeFileName {
+  _$SomeFileName([ChopperClient? client]) {
     if (client == null) return;
     this.client = client;
   }
 
   @override
-  final Type definitionType = PetServiceYaml;
+  final Type definitionType = SomeFileName;
 
   @override
   Future<Response<dynamic>> _petPost({

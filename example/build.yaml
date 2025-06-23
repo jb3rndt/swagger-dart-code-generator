@@ -11,21 +11,30 @@ targets:
       chopper_generator:
         options:
           header: "//Generated code"
+
       swagger_dart_code_generator:
         options:
           input_folder: "input_folder/"
           output_folder: "lib/swagger_generated_code/"
           input_urls:
-            - "https://raw.githubusercontent.com/epam-cross-platform-lab/swagger-dart-code-generator/master/example/input_folder/pet_service_json.json"
-            - "https://raw.githubusercontent.com/epam-cross-platform-lab/swagger-dart-code-generator/master/example/input_folder/pet_service_yaml.yaml"
+            - url: "https://raw.githubusercontent.com/epam-cross-platform-lab/swagger-dart-code-generator/master/example/input_folder/pet_service_json.json"
+              file_name: "some_file_name.json"
+            - url: "https://raw.githubusercontent.com/epam-cross-platform-lab/swagger-dart-code-generator/master/example/input_folder/pet_service_yaml.yaml"
           with_base_url: true
           with_converter: true
           use_path_for_request_names: true
+          include_null_query_vars: true
           use_default_null_for_lists: false
           override_equals_and_hashcode: true
           build_only_models: false
           additional_headers:
             - "Cache-Control"
+          overriden_models:
+            - file_name: "pet_service_json"
+              import_url: "../overriden_models.dart"
+              overriden_models:
+                - "Pet"
+                - "Order"
           separate_models: false
           enums_case_sensitive: false
           cut_from_model_names: "ModelRenameV3"
