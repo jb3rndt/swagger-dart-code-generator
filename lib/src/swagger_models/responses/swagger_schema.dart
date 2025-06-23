@@ -3,7 +3,7 @@ import 'package:swagger_dart_code_generator/src/code_generators/constants.dart';
 
 part 'swagger_schema.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class SwaggerSchema {
   SwaggerSchema({
     dynamic type = '',
