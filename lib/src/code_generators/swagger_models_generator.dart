@@ -1278,10 +1278,11 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
         .firstWhereOrNull((element) => element.superClass == className)
         ?.baseClass;
 
-    print(inheritsFrom);
-    print(allClasses.keys);
-
     if (inheritsFrom != null) {
+      if (!allClasses.containsKey(inheritsFrom)) {
+        throw Exception(
+            'Class $className wants to inherit from $inheritsFrom, which is not found in the provided schemas.');
+      }
       attributes = <String, SwaggerSchema>{}..addEntries(properties.entries
           .where((element) =>
               allClasses[inheritsFrom]!.properties[element.key] == null));
@@ -1453,7 +1454,10 @@ $copyWithMethod
 
     final splittedProperties = RegExp(
       '\\S+ (\\S+);',
-    ).allMatches(generatedProperties).map((e) => e.group(1)!);
+    )
+        .allMatches(generatedProperties)
+        .map((e) => e.group(1)!)
+        .where((prop) => !prop.contains(")"));
 
     if (splittedProperties.isEmpty) {
       return '';
@@ -1484,13 +1488,13 @@ $copyWithMethod
         type += '?';
       }
       return '$type ${e.group(2)!}';
-    });
+    }).where((prop) => !prop.contains(")"));
 
     final splittedCopyWithWrappedProperties = RegExp(
       '(\\S+) (\\S+);',
     ).allMatches(generatedProperties).map((e) {
       return 'Wrapped<${e.group(1)!}>? ${e.group(2)!}';
-    });
+    }).where((prop) => !prop.contains(")"));
 
     if (splittedCopyWithProperties.isEmpty) {
       return '';
@@ -1536,6 +1540,7 @@ $copyWithMethod
     )
         .allMatches(generatedProperties)
         .map((e) => e.group(1)!)
+        .where((prop) => !prop.contains(")"))
         .map((e) => 'const DeepCollectionEquality().hash($e)');
 
     final allHashComponents =
