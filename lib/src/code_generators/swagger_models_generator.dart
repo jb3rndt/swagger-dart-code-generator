@@ -393,7 +393,8 @@ abstract class SwaggerModelsGenerator extends SwaggerGeneratorBase {
         final scalar = options.scalars[parameter.format];
         if (scalar != null) {
           return scalar.type;
-        } else if (parameter.format == 'date-time' || parameter.format == 'date') {
+        } else if (parameter.format == 'date-time' ||
+            parameter.format == 'date') {
           return 'DateTime';
         } else if (parameter.isEnum) {
           return 'enums.${getValidatedClassName(generateEnumName(getValidatedClassName(className), parameterName))}';
@@ -435,7 +436,8 @@ abstract class SwaggerModelsGenerator extends SwaggerGeneratorBase {
   }
 
   String generatePropertyJsonConverterAnnotation(SwaggerSchema schema) {
-    final override = schema.type == 'string' ? options.scalars[schema.format] : null;
+    final override =
+        schema.type == 'string' ? options.scalars[schema.format] : null;
     if (override == null) {
       return '';
     }
@@ -1010,7 +1012,9 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
     required Map<String, SwaggerSchema> allClasses,
     required bool isDeprecated,
   }) {
-    final jsonConverterAnnotation = prop.items == null ? '' : generatePropertyJsonConverterAnnotation(prop.items!);
+    final jsonConverterAnnotation = prop.items == null
+        ? ''
+        : generatePropertyJsonConverterAnnotation(prop.items!);
     final typeName = _generateListPropertyTypeName(
       allEnumListNames: allEnumListNames,
       allEnumNames: allEnumNames,
@@ -1075,7 +1079,8 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
     required bool isDeprecated,
   }) {
     final includeIfNullString = generateIncludeIfNullString();
-    final jsonConverterAnnotation = generatePropertyJsonConverterAnnotation(prop);
+    final jsonConverterAnnotation =
+        generatePropertyJsonConverterAnnotation(prop);
 
     var jsonKeyContent =
         "@JsonKey(name: '${_validatePropertyKey(propertyKey)}'$includeIfNullString";
@@ -1226,7 +1231,7 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
     for (var i = 0; i < propertiesMap.keys.length; i++) {
       var propertyName = propertiesMap.keys.elementAt(i);
 
-      final prop = propertiesMap[propertyName]!;
+      var prop = propertiesMap[propertyName]!;
 
       final propertyKey = propertyName;
 
@@ -1241,6 +1246,23 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
       propertyName = getParameterName(propertyName, propertyNames);
 
       propertyNames.add(propertyName);
+
+      if (prop.anyOf.isNotEmpty) {
+        if (prop.anyOf.length == 1) {
+          prop = SwaggerSchema.fromJson(prop.anyOf.first.toJson()
+            ..addAll(prop.toJson()..remove("anyOf"))
+            ..addAll({"nullable": true}));
+        } else if (prop.anyOf.length == 2 &&
+            prop.anyOf.any((e) => e.type != 'null')) {
+          final subSchema = prop.anyOf.firstWhere((e) => e.type != 'null');
+          final json = prop.toJson()
+            ..remove("anyOf")
+            ..addAll(subSchema.toJson())
+            ..addAll({"nullable": true});
+          prop = SwaggerSchema.fromJson(json);
+        }
+      }
+
       if (prop.type.isNotEmpty) {
         results.add(generatePropertyContentByType(
           prop,
@@ -1327,7 +1349,8 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
 
     allClasses.forEach((key, value) {
       if (kBasicTypes.contains(value.type.toLowerCase()) && !value.isEnum) {
-        result.addAll({key: _mapBasicTypeToDartType(value.type, value.format, options)});
+        result.addAll(
+            {key: _mapBasicTypeToDartType(value.type, value.format, options)});
       }
 
       if (value.type == kArray && value.items != null) {
@@ -1340,7 +1363,8 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
           final schema = allClasses[typeName];
 
           if (kBasicTypes.contains(schema?.type)) {
-            typeName = _mapBasicTypeToDartType(schema!.type, value.format, options);
+            typeName =
+                _mapBasicTypeToDartType(schema!.type, value.format, options);
           } else {
             typeName = getValidatedClassName(typeName);
           }
@@ -1353,7 +1377,8 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
     return result;
   }
 
-  static String _mapBasicTypeToDartType(String basicType, String format, GeneratorOptions options) {
+  static String _mapBasicTypeToDartType(
+      String basicType, String format, GeneratorOptions options) {
     switch (basicType.toLowerCase()) {
       case 'string':
         final scalar = options.scalars[format];
