@@ -25,7 +25,7 @@ part 'pet_service_json.swagger.g.dart';
 
 @ChopperApi()
 abstract class PetServiceJson extends ChopperService {
-  static Future<dynamic> Function(Future<Response<dynamic>> Function())?
+  static Future<dynamic> Function(Future<chopper.Response<dynamic>> Function())?
   _handleConnection;
 
   static PetServiceJson create({
@@ -36,7 +36,7 @@ abstract class PetServiceJson extends ChopperService {
     Converter? converter,
     Uri? baseUrl,
     List<Interceptor>? interceptors,
-    Future<dynamic> Function(Future<Response<dynamic>> Function())?
+    Future<dynamic> Function(Future<chopper.Response<dynamic>> Function())?
     handleConnection,
   }) {
     _handleConnection = handleConnection;

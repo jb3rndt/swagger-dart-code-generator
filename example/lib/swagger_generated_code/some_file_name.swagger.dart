@@ -24,7 +24,7 @@ part 'some_file_name.swagger.g.dart';
 
 @ChopperApi()
 abstract class SomeFileName extends ChopperService {
-  static Future<dynamic> Function(Future<Response<dynamic>> Function())?
+  static Future<dynamic> Function(Future<chopper.Response<dynamic>> Function())?
   _handleConnection;
 
   static SomeFileName create({
@@ -35,7 +35,7 @@ abstract class SomeFileName extends ChopperService {
     Converter? converter,
     Uri? baseUrl,
     List<Interceptor>? interceptors,
-    Future<dynamic> Function(Future<Response<dynamic>> Function())?
+    Future<dynamic> Function(Future<chopper.Response<dynamic>> Function())?
     handleConnection,
   }) {
     _handleConnection = handleConnection;
