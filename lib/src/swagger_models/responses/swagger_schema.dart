@@ -110,8 +110,6 @@ class SwaggerSchema {
 
   bool get shouldBeNullable =>
       isNullable == true ||
-          readOnly ||
-          writeOnly ||
           (_type is List && (_type as List).contains('null'));
 
   @JsonKey(name: 'schema')

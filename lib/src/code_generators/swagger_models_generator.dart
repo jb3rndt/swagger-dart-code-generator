@@ -293,7 +293,7 @@ abstract class SwaggerModelsGenerator extends SwaggerGeneratorBase {
       return allEnumsString;
     }
 
-    var results = classes.keys.map((String className) {
+    var results = classes.keys.sorted().map((String className) {
       if (classes['enum'] != null) {
         return '';
       }
@@ -525,7 +525,7 @@ class $className implements json.JsonConverter<${value.type}, String> {
         "@JsonKey(name: '$propertyKey'$includeIfNullString$dateToJsonValue${unknownEnumValue.jsonKey})\n";
     final deprecatedContent = isDeprecated ? '@deprecated\n' : '';
 
-    return '\t$jsonKeyContent$deprecatedContent\tfinal $typeName ${generateFieldName(propertyName)};${unknownEnumValue.fromJson}';
+    return '\t$jsonKeyContent$deprecatedContent\t$typeName ${generateFieldName(propertyName)};${unknownEnumValue.fromJson}';
   }
 
   JsonEnumValue generateEnumValue({
@@ -712,7 +712,7 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
       typeName = typeName.makeNullable();
     }
 
-    return '\t$jsonKeyContent$deprecatedContent\tfinal $typeName ${generateFieldName(propertyName)};${unknownEnumValue.fromJson}';
+    return '\t$jsonKeyContent$deprecatedContent\t$typeName ${generateFieldName(propertyName)};${unknownEnumValue.fromJson}';
   }
 
   String _validatePropertyKey(String key) {
@@ -781,7 +781,7 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
       typeName = typeName.makeNullable();
     }
 
-    return '\t$jsonKeyContent$deprecatedContent\tfinal $typeName $propertyName;${unknownEnumValue.fromJson}';
+    return '\t$jsonKeyContent$deprecatedContent\t$typeName $propertyName;${unknownEnumValue.fromJson}';
   }
 
   String generatePropertyContentByRef(
@@ -870,7 +870,7 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
       typeName += '?';
     }
 
-    return '\t$jsonKeyContent$deprecatedContent\tfinal $typeName $propertyName;${unknownEnumValue.fromJson}';
+    return '\t$jsonKeyContent$deprecatedContent\t$typeName $propertyName;${unknownEnumValue.fromJson}';
   }
 
   String generateEnumPropertyContent({
@@ -909,7 +909,7 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
     return '''
   @JsonKey(${unknownEnumValue.jsonKey.substring(2)}$includeIfNullString)
   ${isDeprecated ? kDeprecatedAnnotation : ''}
-  final $enumPropertyName ${generateFieldName(key)};
+  $enumPropertyName ${generateFieldName(key)};
 
   ${unknownEnumValue.fromJson}''';
   }
@@ -1064,7 +1064,7 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
       listPropertyName = listPropertyName.makeNullable();
     }
 
-    return '$jsonConverterAnnotation$jsonKeyContent$deprecatedContent final $listPropertyName ${generateFieldName(propertyName)};${unknownEnumValue.fromJson}';
+    return '$jsonConverterAnnotation$jsonKeyContent$deprecatedContent $listPropertyName ${generateFieldName(propertyName)};${unknownEnumValue.fromJson}';
   }
 
   String generateGeneralPropertyContent({
@@ -1138,11 +1138,11 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
 
     if (prop.shouldBeNullable ||
         options.nullableModels.contains(className) ||
-        !requiredProperties.contains(propertyKey)) {
+        (!requiredProperties.contains(propertyKey) && prop.defaultValue == null)) {
       typeName = typeName.makeNullable();
     }
 
-    return '\t$jsonConverterAnnotation$jsonKeyContent$isDeprecatedContent  final $typeName $propertyName;${unknownEnumValue.fromJson}';
+    return '\t$jsonConverterAnnotation$jsonKeyContent$isDeprecatedContent  $typeName $propertyName;${unknownEnumValue.fromJson}';
   }
 
   String generatePropertyContentByType(
@@ -1438,9 +1438,9 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
           !value.shouldBeNullable && requiredProperties.contains(key);
 
       if (isRequiredProperty || !isNullableProperty) {
-        results += '\t\t$kRequired this.$fieldName,\n';
+        results += '\t\t$kRequired $thisOrSuper.$fieldName,\n';
       } else {
-        results += '\t\tthis.$fieldName,\n';
+        results += '\t\t$thisOrSuper.$fieldName,\n';
       }
     });
 
@@ -1486,7 +1486,7 @@ static $returnType $fromJsonFunction($valueType? value) => $enumNameCamelCase$fr
       defaultValues: defaultValues,
       allEnumNames: allEnumNames,
       allEnumListNames: allEnumListNames,
-      requiredProperties: requiredProperties,
+      requiredProperties: properties.keys.toList(),
       attributes: attributes,
     );
 
@@ -1555,7 +1555,7 @@ String toString() => jsonEncode(this);
 @JsonSerializable(explicitToJson: true $createToJson)
 @LocalDateTimeConverter()
 class $validatedClassName $extendsString{
-\tconst $validatedClassName($generatedConstructorProperties);\n
+\t$validatedClassName($generatedConstructorProperties);\n
 \t$fromJson\n
 \t$toJson\n
 $generatedAttributes
