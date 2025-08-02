@@ -849,25 +849,25 @@ if (_handleConnection != null) {
         }
 
         // in case a scheme for the request is defined, we use only one param const kBody and the type of this param will be the scheme as class.
-        if (requestBody.content?.schema?.ref.isNotEmpty == true) {
-          result.add(
-            Parameter(
-              (p) => p
-                ..name = kBody
-                ..named = true
-                ..required = true
-                ..type = Reference(getValidatedClassName(
-                    requestBody.content!.schema!.ref.getRef()))
-                ..named = true
-                ..annotations.add(
-                  refer(kPart.pascalCase).call([]),
-                ),
-            ),
-          );
+        // if (requestBody.content?.schema?.ref.isNotEmpty == true) {
+        //   result.add(
+        //     Parameter(
+        //       (p) => p
+        //         ..name = kBody
+        //         ..named = true
+        //         ..required = true
+        //         ..type = Reference(getValidatedClassName(
+        //             requestBody.content!.schema!.ref.getRef()))
+        //         ..named = true
+        //         ..annotations.add(
+        //           refer(kPart.pascalCase).call([]),
+        //         ),
+        //     ),
+        //   );
 
-          // early return
-          return result.distinctParameters();
-        }
+        //   // early return
+        //   return result.distinctParameters();
+        // }
 
         if (schema?.properties.isEmpty == true) {
           result.add(
